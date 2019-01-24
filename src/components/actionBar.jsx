@@ -6,14 +6,14 @@ class actionBar extends Component {
     return (
 
       <div className="btn-group  d-flex w-100 justify-content-center px-5 mb-5" role="group" aria-label="Basic example">
-        <NavLink  className="btn btn-primary"  to="/dashboard/home" >Home</NavLink>
-        <NavLink  className="btn btn-primary"  to="/dashboard/alltasks" >Your Tasks</NavLink>
-        <NavLink  className="btn btn-primary" to="/uoou">Team Tasks</NavLink>
-        <NavLink  className="btn btn-primary" to="/jno">Add New Task</NavLink>
-        <NavLink  className="btn btn-primary" to="/iojoi">Leave Comment to The Team</NavLink>
+        <NavLink  className="btn btn-primary py-2"  to="/dashboard/home" >Home</NavLink>
+        <NavLink  className="btn btn-primary py-2"  to="/dashboard/alltasks" >Your Tasks</NavLink>
+        <NavLink  className="btn btn-primary py-2" to="/dashboard/newtask">Create New Task</NavLink>
+        <NavLink  className="btn btn-primary py-2" to="/dashboard/allcomments">Team Comments</NavLink>
+        <NavLink  className="btn btn-primary py-2" to="/dashboard/newcomment">Leave Comment</NavLink>
       </div>
     );
-  }
+  }i
 
 }
 

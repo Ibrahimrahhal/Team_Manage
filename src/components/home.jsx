@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from "react-router-dom";
 import './home.css';
 class home extends Component {
 renderHome(){
@@ -11,7 +12,7 @@ return (
 </div>
 
 <div className="mt-5 d-flex w-100 justify-content-center flex-column align-items-center">
-<button className="btn btn-primary m-2 w-50" >Login</button>
+<Link className="btn btn-primary m-2 w-50" to="/login" >Login</Link>
 or
 <button className="btn btn-link m-2">Sign Up</button>
 </div>

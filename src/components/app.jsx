@@ -10,6 +10,7 @@ import {
 
 import Home from './home'
 import Dashboard from './dashboard'
+import Login from './Login'
 
 
 
@@ -20,7 +21,9 @@ class App extends Component {
     return (
     <Switch>
       <Route path = "/dashboard"  component = {Dashboard}  />
+      <Route path = "/login"  component = {Login}  />
       <Route path = "/"  component = {Home}  />
+
    </Switch>
     );
   }
