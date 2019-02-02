@@ -11,6 +11,7 @@ import {
 import Home from './home'
 import Dashboard from './dashboard'
 import Login from './Login'
+import signup from './signup'
 
 
 
@@ -22,8 +23,8 @@ class App extends Component {
     <Switch>
       <Route path = "/dashboard"  component = {Dashboard}  />
       <Route path = "/login"  component = {Login}  />
+      <Route path = "/signup"  component = {signup}  />
       <Route path = "/"  component = {Home}  />
-
    </Switch>
     );
   }
