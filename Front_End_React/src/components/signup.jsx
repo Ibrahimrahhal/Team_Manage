@@ -15,6 +15,10 @@ class signup extends Component {
       <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
     </div>
     <div className="form-group d-flex justify-content-center flex-column align-items-center w-100">
+      <label for="exampleInputEmail1">Email</label>
+      <input type="Email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+    </div>
+    <div className="form-group d-flex justify-content-center flex-column align-items-center w-100">
       <label for="exampleInputPassword1">Password</label>
       <input type="password" className="form-control" id="exampleInputPassword1" />
     </div>
