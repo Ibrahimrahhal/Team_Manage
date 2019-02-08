@@ -1,5 +1,8 @@
 var express = require('express');
-var router = require('./routers.js/NewUserRouter');
+var registerRouter = require('./routers.js/NewUserRouter');
+var loginRouter = require('./routers.js/LoginRouter');
 var app = express();
-app.use('/register', router);
+app.use('/register', registerRouter);
+app.use('/login', loginRouter);
+
 app.listen(8000);

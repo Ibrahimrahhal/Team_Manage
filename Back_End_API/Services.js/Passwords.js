@@ -3,17 +3,22 @@ var sha256 = require("sha256");
 
 function generateSaltAndHash(password) {
   let salt = randFunction.generate(32);
+  let hld = "" + salt + password + salt;
   return {
-    password: sha256.x2(salt + password + salt),
+    password: sha256.x2(hld),
     salt
   };
 }
 
 function validateHashedPassword(hashedPassword, password, salt) {
-  if (hashedPassword === (sha256.x2(salt + password + salt)))
+  let hld = '';
+  hld = salt + password + salt;
+  hld = sha256.x2(hld);
+
+  if (hashedPassword === hld)
     return true;
   else
-    return false;
+    console.log(hld);
 };
 module.exports = {
   validateHashedPassword,

@@ -3,14 +3,14 @@ var user = {
   UserName: String,
   Password: String,
   Salt: String,
-  teamId: String,
+  teamIds: [String],
   Email: String
 }
 var user_joi = {
-  UserName: Joi.string(),
-  Password: Joi.string(),
-  teamId: Joi.string(),
-  Email: Joi.string().email()
+  UserName: Joi.string().required(),
+  Password: Joi.string().required(),
+  teamIds: Joi.array().items(Joi.string()).required(),
+  Email: Joi.string().email().required()
 }
 module.exports = {
   user,

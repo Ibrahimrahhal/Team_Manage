@@ -1,7 +1,9 @@
 var jwt = require("jsonwebtoken");
+var _ = require('lodash/object');
 
-function getJwt(payload, Password) {
-  return jwt.sign(payload, Password);
+function getJwt(user) {
+  let payload = _.pick(user, ["_id", "teamIds", "UserName"]);
+  return jwt.sign(payload, user.Password);
 }
 
 function authUser(jwt, Password) {

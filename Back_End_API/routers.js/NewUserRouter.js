@@ -1,47 +1,41 @@
 var express = require('express');
 var body = require('body-parser');
-var user = require('../userSchema');
-var mongoose = require('mongoose');
 var Joi = require('joi');
 var _ = require('lodash/object');
+var user = require('../userSchema');
 var passService = require('../Services.js/Passwords');
-var mongodbServer = require('../setting').mongodbServer;
+var database = require('../Services.js/database');
 var router = express.Router();
-let userSchema = new mongoose.Schema(user.user);
-var userModel = mongoose.model('user', userSchema);
 router.use(body.json());
-router.post('/', async (req, res) => {
-  mongoose.connect(mongodbServer);
-  let db = mongoose.connection;
+router.post('/', (req, res) => {
   let result = Joi.validate(req.body, user.user_joi);
-
-  if ((result.error)) {
-    res.send("0");
+  if (result.error) {
+    res.send(result);
   } else {
     let password = passService.generateSaltAndHash(req.body.Password);
     let NewUserObject = req.body;
     NewUserObject.Password = password.password;
     NewUserObject.Salt = password.salt;
-    let newUser = new userModel(NewUserObject);
-    newUser.save(function(err) {
-      if (err) console.log(err);
-      // saved!
-    });
+    if ((database.addUser(NewUserObject)))
+      res.send("0");
+
+    database.getUserByUserName(NewUserObject.UserName)
+      .then(data => {
+        res.json(
+          _.pick(
+            data,
+            ['_id', 'teamIds', 'UserName'])
+        );
+        res.json(NewUserObject);
+      }).catch(() => {
+        res.send("error in getting the user");
+      });
 
 
-    res.json(
-      _.pick(
-        await userModel.findOne({
-          UserName: NewUserObject.UserName
-        }),
-        ['_id', 'teamId', 'UserName'])
-    );
 
 
 
 
-
-    res.json(NewUserObject);
   }
 });
 
