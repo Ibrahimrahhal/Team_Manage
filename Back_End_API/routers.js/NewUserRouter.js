@@ -1,7 +1,6 @@
 var express = require('express');
 var body = require('body-parser');
 var Joi = require('joi');
-var _ = require('lodash/object');
 var user = require('../userSchema');
 var passService = require('../Services.js/Passwords');
 var database = require('../Services.js/database');
@@ -18,24 +17,7 @@ router.post('/', (req, res) => {
     NewUserObject.Salt = password.salt;
     if ((database.addUser(NewUserObject)))
       res.send("0");
-
-    database.getUserByUserName(NewUserObject.UserName)
-      .then(data => {
-        res.json(
-          _.pick(
-            data,
-            ['_id', 'teamIds', 'UserName'])
-        );
-        res.json(NewUserObject);
-      }).catch(() => {
-        res.send("error in getting the user");
-      });
-
-
-
-
-
-
+    res.send("1");
   }
 });
 

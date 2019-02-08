@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
       .then((data) => {
         console.log(data);
         user = data;
-        if (passService.validateHashedPassword(user.Password, req.body.Password, user.salt)) {
+        if (passService.validateHashedPassword(user.Password, req.body.Password, user.Salt)) {
           res.json(auth.getJwt(user));
 
 

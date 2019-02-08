@@ -15,7 +15,21 @@ function authUser(token, Password) {
   }
 }
 
+function authMiddle(req, res, next) {
+  var cookie = req.cookies.auth;
+  if (req.path === '/login' || req.path === '/register') {
+    next();
+  } else {
+    if (cookie === undefined) {
+      res.sendStatus(401);
+    }
+    next();
+  }
+
+}
+
 module.exports = {
   getJwt,
-  authUser
+  authUser,
+  authMiddle
 };

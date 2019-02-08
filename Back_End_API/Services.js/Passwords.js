@@ -14,11 +14,10 @@ function validateHashedPassword(hashedPassword, password, salt) {
   let hld = '';
   hld = salt + password + salt;
   hld = sha256.x2(hld);
-
   if (hashedPassword === hld)
     return true;
   else
-    console.log(hld);
+    return false
 };
 module.exports = {
   validateHashedPassword,
