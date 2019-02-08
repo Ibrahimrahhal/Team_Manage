@@ -22,8 +22,6 @@ router.post('/', (req, res) => {
         user = data;
         if (passService.validateHashedPassword(user.Password, req.body.Password, user.Salt)) {
           res.json(auth.getJwt(user));
-
-
         } else {
           res.send("PassErr");
         }
