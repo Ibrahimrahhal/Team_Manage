@@ -6,8 +6,13 @@ function getJwt(user) {
   return jwt.sign(payload, user.Password);
 }
 
-function authUser(jwt, Password) {
-  return jwt.verify(jwt, Password);
+function authUser(token, Password) {
+  try {
+    jwt.verify(token, Password);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 module.exports = {

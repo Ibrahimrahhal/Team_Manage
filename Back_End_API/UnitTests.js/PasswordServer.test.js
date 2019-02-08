@@ -16,5 +16,14 @@ describe("Password Service Tests", () => {
       .toBeTruthy();
   });
 
+  it("should detect wrong hash", () => {
+    let salt = "salt";
+    let hashedPassword = sha256.x2("" + salt + "test" + salt);
+    expect(
+        PService
+        .validateHashedPassword(hashedPassword, "tast", salt)
+      )
+      .toBeFalsy();
+  });
 
 });
