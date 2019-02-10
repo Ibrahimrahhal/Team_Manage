@@ -1,6 +1,5 @@
 var team = {
-  _id: String,
-  teamMembers: [String],
+  teamMembersIds: [],
   randCode: String,
   teamComments: [Strings],
   teamTasks: [{
@@ -11,4 +10,6 @@ var team = {
   }]
 }
 
-export default team;
+module.exports = {
+  team
+};

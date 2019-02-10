@@ -3,21 +3,22 @@ var body = require('body-parser');
 var Joi = require('joi');
 var user = require('../userSchema');
 var passService = require('../Services.js/Passwords');
-var database = require('../Services.js/database');
+var database = require('../Services.js/database_user');
 var router = express.Router();
 router.use(body.json());
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   let result = Joi.validate(req.body, user.user_joi);
   if (result.error) {
-    res.send(result);
+    res.sendStatus(400);
   } else {
     let password = passService.generateSaltAndHash(req.body.Password);
     let NewUserObject = req.body;
     NewUserObject.Password = password.password;
     NewUserObject.Salt = password.salt;
-    if ((database.addUser(NewUserObject)))
-      res.send("0");
-    res.send("1");
+    let result = await database.addUser(NewUserObject);
+    if (result === "db_err") res.send("0");
+    if (result === "user_ex") res.send("userExist");
+    if (result === "ok") res.send("1");
   }
 });
 
