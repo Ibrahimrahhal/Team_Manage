@@ -48,9 +48,14 @@ function ValidateReqFromUser({
   }
 }
 
+function getPayload(auth_cookie) {
+  return jwtDecode(auth_cookie);
+}
+
 module.exports = {
   getJwt,
   authUser,
   authMiddle,
-  ValidateReqFromUser
+  ValidateReqFromUser,
+  getPayload
 };
