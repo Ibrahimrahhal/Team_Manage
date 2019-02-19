@@ -1,10 +1,9 @@
 var Joi = require('joi');
-const Extension = require('joi-date-extensions');
-const Joi = BaseJoi.extend(Extension);
+
 var team = {
-  teamMembersIds: [Strings],
+  teamMembersIds: [String],
   randCode: String,
-  teamComments: [Strings],
+  teamComments: [String],
   teamTasks: [{
     task: String,
     teamMemberIdFrom: String,
@@ -15,7 +14,7 @@ var team = {
 var team_joi = {
   teamMembersIds: Joi.array().items(Joi.string()).required(),
   teamComments: Joi.array().items(Joi.string()).required(),
-  teamTasks: []
+  teamTasks: Joi.array()
 }
 
 module.exports = {

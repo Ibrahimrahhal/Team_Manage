@@ -28,7 +28,7 @@ async function addTeam(team) {
 
 
 
-async function checkUniqueUser({
+async function checkUniqueTeam({
   randCode
 }) {
   let result = await teamModel.find({
