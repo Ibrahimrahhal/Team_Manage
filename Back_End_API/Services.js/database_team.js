@@ -45,10 +45,38 @@ async function checkUniqueTeam({
   } else {
     return true;
   }
+}
 
+
+
+async function joinTeam(team, _id) {
+  let old;
+  try {
+    old = await teamModel.findOne({
+      randCode: team
+    }).teamMembersIds;
+    if (!old.includes(_id))
+      old.push(_id);
+    else
+      return "userErr";
+
+  } catch {
+    return "404";
+  }
+  try {
+    await teamModel.updateOne({
+      randCode: team
+    }, {
+      randCode: old
+    });
+  } catch {
+    return "updateErr";
+  }
+  return "1";
 }
 
 module.exports = {
   checkUniqueTeam,
-  addTeam
+  addTeam,
+  joinTeam
 };
