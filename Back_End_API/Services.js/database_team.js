@@ -6,10 +6,16 @@ var teamSchema = new mongoose.Schema(team.team);
 var teamModel = mongoose.model('team', teamSchema);
 mongoose.connect(mongodbServer);
 
-async function addTeam(team) {
+async function addTeam(_id) {
+  let Team = {
+    randCode: randFunction.generate(8),
+    teamMembersIds: [_id],
+    teamTasks: [],
+    teamComments: []
+  };
   try {
-    if (await checkUniqueTeam(team)) {
-      let newTeam = new teamModel(team);
+    if (await checkUniqueTeam(Team)) {
+      let newTeam = new teamModel(Team);
       newTeam.save(
         function(err) {
           if (err)
@@ -18,8 +24,8 @@ async function addTeam(team) {
       );
       return "ok";
     } else {
-      team.randCode = randFunction.generate(8);
-      addTeam(team);
+      Team.randCode = randFunction.generate(8);
+      addTeam(Team);
     }
   } catch {
     return "db_err";

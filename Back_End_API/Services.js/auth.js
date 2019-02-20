@@ -25,14 +25,12 @@ function authMiddle(req, res, next) {
     if (cookie === undefined) {
       res.sendStatus(401);
     } else {
-      console.log(cookie);
       if (authUser(cookie)) {
         next();
       } else {
         res.sendStatus(401);
       }
     }
-    next();
   }
 
 }
