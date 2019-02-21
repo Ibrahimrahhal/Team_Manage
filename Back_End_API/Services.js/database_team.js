@@ -113,9 +113,22 @@ async function addComment(team, comment) {
 
 }
 
+async function getTeam(team) {
+  try {
+    let Team = await
+    teamModel.findOne({
+      randCode: team
+    });
+    return Team;
+  } catch {
+    return "Err";
+  }
+}
+
 module.exports = {
   checkUniqueTeam,
   addTeam,
   joinTeam,
-  addComment
+  addComment,
+  getTeam
 };

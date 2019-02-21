@@ -1,7 +1,6 @@
 var express = require('express');
 var body = require('body-parser');
 var Joi = require('joi');
-var auth = require('../Services.js/auth.js');
 var database = require('../Services.js/database_team');
 var router = express.Router();
 router.use(body.json());

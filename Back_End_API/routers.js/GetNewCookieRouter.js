@@ -7,8 +7,9 @@ router.use(body.json());
 router.post('/', async (req, res) => {
   let _id = auth.getPayload(req.cookies.auth)._id;
   let user = await database.getUser(_id);
+  let newCookie;
   if (user != "Err") {
-    let newCookie = auth.getJwt(user);
+    newCookie = auth.getJwt(user);
   }
   res.send(newCookie);
 });
