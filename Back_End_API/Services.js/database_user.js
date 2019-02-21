@@ -58,8 +58,12 @@ async function joinTeam(team, _id) {
   try {
     let old = await userModel.findOne({
       _id
+
     }).teamIds;
-    old.push(team);
+    if (old)
+      old.push(team);
+    else
+      old = [team];
     await userModel.updateOne({
       _id
     }, {

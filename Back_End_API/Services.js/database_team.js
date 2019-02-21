@@ -22,13 +22,19 @@ async function addTeam(_id) {
             throw err;
         }
       );
-      return "ok";
+      return {
+        status: "ok",
+        value: Team.randCode
+      };
     } else {
       Team.randCode = randFunction.generate(8);
       addTeam(Team);
     }
   } catch {
-    return "db_err";
+    return {
+      status: "db_err",
+      value: null
+    };;
   }
 }
 
