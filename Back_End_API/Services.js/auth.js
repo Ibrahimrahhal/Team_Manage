@@ -50,10 +50,19 @@ function getPayload(auth_cookie) {
   return jwtDecode(auth_cookie);
 }
 
+function verifyTeam(team, auth_cookie) {
+  let teamIds = getPayload(auth_cookie).teamIds;
+  if (teamIds)
+    if (teamIds.includes(team))
+      return true;
+  return false;
+}
+
 module.exports = {
   getJwt,
   authUser,
   authMiddle,
   ValidateReqFromUser,
-  getPayload
+  getPayload,
+  verifyTeam
 };

@@ -76,10 +76,25 @@ async function joinTeam(team, _id) {
 
 }
 
+async function getUser(_id) {
+  try {
+    let obj = await userModel.findOne({
+      _id
+    });
+    return obj;
+
+  } catch (e) {
+    return "Err"
+
+  }
+
+}
+
 
 
 module.exports = {
   addUser,
   getUserByUserName,
-  joinTeam
+  joinTeam,
+  getUser
 };
