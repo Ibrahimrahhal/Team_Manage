@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
     res.sendStatus(400);
     return;
   }
-  let saveResult_t = await database_t.addTeam(auth.getPayload(req.cookies.auth)._id);
+  let saveResult_t = await database_t.addTeam(auth.getPayload(req.cookies.auth));
 
   if (saveResult_t.status != "ok") {
     res.send("0");

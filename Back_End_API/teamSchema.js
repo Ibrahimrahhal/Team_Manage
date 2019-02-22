@@ -1,5 +1,9 @@
+var Joi = require("joi");
 var team = {
-  teamMembersIds: [String],
+  teamMembersIds: [{
+    UserName: String,
+    _id: String
+  }],
   randCode: String,
   teamComments: [String],
   teamTasks: [{
@@ -9,7 +13,21 @@ var team = {
     deadLine: Date
   }]
 }
+var task = {
+  Team: Joi.string().required(),
+  Task: {
+    task: Joi.string().required(),
+    teamMemberIdFrom: Joi.string().required(),
+    teamMemberIdTo: Joi.string().required(),
+    deadLine: {
+      day: Joi.number().required(),
+      month: Joi.number().required(),
+      year: Joi.number().required()
+    }
+  }
+}
 
 module.exports = {
-  team
+  team,
+  task
 };

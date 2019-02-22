@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
   console.log("shit");
   if (typeof teamCode === typeof "shit") {
     let result_t
-    result_t = await database_t.joinTeam(teamCode, auth.getPayload(req.cookies.auth)._id)
+    result_t = await database_t.joinTeam(teamCode, auth.getPayload(req.cookies.auth))
     switch (result_t) {
       case "1":
         let result_u = await database_u.joinTeam(teamCode, auth.getPayload(req.cookies.auth)._id);

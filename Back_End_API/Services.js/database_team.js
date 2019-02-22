@@ -6,10 +6,16 @@ var teamSchema = new mongoose.Schema(team.team);
 var teamModel = mongoose.model('team', teamSchema);
 mongoose.connect(mongodbServer);
 
-async function addTeam(_id) {
+async function addTeam({
+  _id,
+  UserName
+}) {
   let Team = {
     randCode: randFunction.generate(8),
-    teamMembersIds: [_id],
+    teamMembersIds: [{
+      _id,
+      UserName
+    }],
     teamTasks: [],
     teamComments: []
   };
@@ -55,20 +61,34 @@ async function checkUniqueTeam({
 
 
 
-async function joinTeam(team, _id) {
+async function joinTeam(team, {
+  _id,
+  UserName
+}) {
   let old;
   try {
     old = await teamModel.findOne({
       randCode: team
     });
     old = old.teamMembersIds;
-    if (!old.includes(_id))
-      old.push(_id);
+    if (old)
+      if (!old.includes({
+          _id,
+          UserName
+        }))
+        old.push({
+          _id,
+          UserName
+        });
+      else
+        return "userErr";
     else
-      return "userErr";
+      old = [{
+        _id,
+        UserName
+      }];
 
-  } catch (e) {
-    console.log(e);
+  } catch {
     return "404";
   }
   try {
@@ -113,22 +133,145 @@ async function addComment(team, comment) {
 
 }
 
+async function addTask({
+  task,
+  teamMemberIdFrom,
+  teamMemberIdTo,
+  deadLine
+}, team) {
+  let old;
+  let neww = {
+    task,
+    teamMemberIdFrom,
+    teamMemberIdTo,
+    deadLine: new Date(deadLine.day, deadLine.month, deadLine.year)
+  };
+  try {
+    old = await teamModel.findOne({
+      randCode: team
+    });
+    old = old.teamTasks;
+    if (old)
+      old.push(neww);
+    else
+      old = [neww];
+
+  } catch {
+    return "404";
+  }
+  try {
+    await teamModel.updateOne({
+      randCode: team
+    }, {
+      teamTasks: old
+    });
+  } catch {
+    return "updateErr";
+  }
+  return "1";
+
+
+
+}
+
+async function deleteTask({
+  task,
+  teamMemberIdFrom,
+  teamMemberIdTo
+}, team) {
+  let old;
+  let neww;
+  try {
+    old = await teamModel.findOne({
+      randCode: team
+    });
+    old = old.teamTasks;
+    if (old) {
+      neww =
+        old.filter((one) => {
+          if (one.task === task &&
+            one.teamMemberIdFrom === teamMemberIdFrom &&
+            one.teamMemberIdTo === teamMemberIdTo)
+            return false;
+          return true;
+        });
+    }
+  } catch {
+    return "404";
+  }
+  try {
+    await teamModel.updateOne({
+      randCode: team
+    }, {
+      teamTasks: neww
+    });
+  } catch {
+    return "updateErr";
+  }
+  return "1";
+
+
+
+}
 async function getTeam(team) {
   try {
     let Team = await
     teamModel.findOne({
       randCode: team
     });
-    return Team;
+    if (Team)
+      return Team;
+    else {
+      throw "error";
+    }
   } catch {
     return "Err";
   }
 }
+
+
+async function deleteComment(comment, team) {
+  let old;
+  let neww;
+  try {
+    old = await teamModel.findOne({
+      randCode: team
+    });
+    old = old.teamComments;
+    if (old) {
+      neww =
+        old.filter((one) => {
+          if (one === comment)
+            return false;
+          return true;
+        });
+    }
+  } catch {
+    return "404";
+  }
+  try {
+    await teamModel.updateOne({
+      randCode: team
+    }, {
+      teamTasks: neww
+    });
+  } catch {
+    return "updateErr";
+  }
+  return "1";
+
+
+
+}
+
 
 module.exports = {
   checkUniqueTeam,
   addTeam,
   joinTeam,
   addComment,
-  getTeam
+  getTeam,
+  addTask,
+  deleteComment,
+  deleteTask
 };
