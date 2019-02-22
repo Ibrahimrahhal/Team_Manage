@@ -18,7 +18,8 @@ router.post('/', async (req, res) => {
 
         res.json({
           teamComments: result.teamComments,
-          teamTasks: result.teamTasks
+          teamTasks: result.teamTasks,
+          teamMembersIds: result.teamMembersIds
         });
 
       } else {

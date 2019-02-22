@@ -54,16 +54,47 @@ async function checkUniqueUser({
   }
 
 }
-async function joinTeam(team, _id) {
+async function joinTeam({
+  teamName,
+  _id
+}, id) {
   try {
+    let team = {
+      teamName,
+      teamId: _id
+    };
     let old = await userModel.findOne({
-      _id
-
-    }).teamIds;
+      id
+    });
+    old = old.teamIds;
     if (old)
       old.push(team);
     else
       old = [team];
+    await userModel.updateOne({
+      id
+    }, {
+      teamIds: old
+    });
+  } catch {
+    return "dbErr"
+  }
+  return "1";
+
+}
+
+async function leaveTeam(team, _id) {
+  try {
+    let old = await userModel.findOne({
+      _id
+    });
+    old = old.teamIds;
+    old = old.filter((one) => {
+      if (one.teamId === team)
+        return false;
+      return true;
+
+    });
     await userModel.updateOne({
       _id
     }, {
@@ -96,5 +127,6 @@ module.exports = {
   addUser,
   getUserByUserName,
   joinTeam,
-  getUser
+  getUser,
+  leaveTeam
 };

@@ -1,5 +1,6 @@
 var Joi = require("joi");
 var team = {
+  teamName: String
   teamMembersIds: [{
     UserName: String,
     _id: String
