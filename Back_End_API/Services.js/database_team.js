@@ -136,183 +136,182 @@ async function addComment(team, comment) {
 }
 
 async function leaveTeam(team, _id) {
-    let old;
-    try {
-      old = await teamModel.findOne({
-        randCode: team
-      });
-      old.teamTasks = old.teamTasks.filter((one) => {
-        if (one.teamMemberIdTo === _id)
-          return false;
-        return true;
-      });
-      old.teamMembersIds = old.teamMembersIds.filter((one) => {
-        if (one._id === _id)
-          return false;
-        return true;
-      });
-      old.teamTasks = old.teamTasks.map((one => {
-          if (one.teamMemberIdFrom === _id)
-            one.teamMemberIdFrom = "Member Has Left";
-          return one;
+  let old;
+  try {
+    old = await teamModel.findOne({
+      randCode: team
+    });
+    old.teamTasks = old.teamTasks.filter((one) => {
+      if (one.teamMemberIdTo === _id)
+        return false;
+      return true;
+    });
+    old.teamMembersIds = old.teamMembersIds.filter((one) => {
+      if (one._id === _id)
+        return false;
+      return true;
+    });
+    old.teamTasks = old.teamTasks.map((one) => {
+      if (one.teamMemberIdFrom === _id)
+        one.teamMemberIdFrom = "Member Has Left";
+      return one;
+    });
+
+  } catch {
+    return "404";
+  }
+  try {
+    await teamModel.updateOne({
+      randCode: team
+    }, old);
+  } catch {
+    return "updateErr";
+  }
+  return "1";
+
+
+
+}
+async function addTask({
+  task,
+  teamMemberIdFrom,
+  teamMemberIdTo,
+  deadLine
+}, team) {
+  let old;
+  let neww = {
+    task,
+    teamMemberIdFrom,
+    teamMemberIdTo,
+    deadLine: new Date(deadLine.day, deadLine.month, deadLine.year)
+  };
+  try {
+    old = await teamModel.findOne({
+      randCode: team
+    });
+    old = old.teamTasks;
+    if (old)
+      old.push(neww);
+    else
+      old = [neww];
+
+  } catch {
+    return "404";
+  }
+  try {
+    await teamModel.updateOne({
+      randCode: team
+    }, {
+      teamTasks: old
+    });
+  } catch {
+    return "updateErr";
+  }
+  return "1";
+
+
+
+}
+
+async function deleteTask({
+  task,
+  teamMemberIdFrom,
+  teamMemberIdTo
+}, team) {
+  let old;
+  let neww;
+  try {
+    old = await teamModel.findOne({
+      randCode: team
+    });
+    old = old.teamTasks;
+    if (old) {
+      neww =
+        old.filter((one) => {
+          if (one.task === task &&
+            one.teamMemberIdFrom === teamMemberIdFrom &&
+            one.teamMemberIdTo === teamMemberIdTo)
+            return false;
+          return true;
         });
-
-      }
-      catch {
-        return "404";
-      }
-      try {
-        await teamModel.updateOne({
-          randCode: team
-        }, old);
-      } catch {
-        return "updateErr";
-      }
-      return "1";
-
-
-
     }
-    async function addTask({
-      task,
-      teamMemberIdFrom,
-      teamMemberIdTo,
-      deadLine
-    }, team) {
-      let old;
-      let neww = {
-        task,
-        teamMemberIdFrom,
-        teamMemberIdTo,
-        deadLine: new Date(deadLine.day, deadLine.month, deadLine.year)
-      };
-      try {
-        old = await teamModel.findOne({
-          randCode: team
-        });
-        old = old.teamTasks;
-        if (old)
-          old.push(neww);
-        else
-          old = [neww];
-
-      } catch {
-        return "404";
-      }
-      try {
-        await teamModel.updateOne({
-          randCode: team
-        }, {
-          teamTasks: old
-        });
-      } catch {
-        return "updateErr";
-      }
-      return "1";
+  } catch {
+    return "404";
+  }
+  try {
+    await teamModel.updateOne({
+      randCode: team
+    }, {
+      teamTasks: neww
+    });
+  } catch {
+    return "updateErr";
+  }
+  return "1";
 
 
 
+}
+async function getTeam(team) {
+  try {
+    let Team = await
+    teamModel.findOne({
+      randCode: team
+    });
+    if (Team)
+      return Team;
+    else {
+      throw "error";
     }
+  } catch {
+    return "Err";
+  }
+}
 
-    async function deleteTask({
-      task,
-      teamMemberIdFrom,
-      teamMemberIdTo
-    }, team) {
-      let old;
-      let neww;
-      try {
-        old = await teamModel.findOne({
-          randCode: team
+
+async function deleteComment(comment, team) {
+  let old;
+  let neww;
+  try {
+    old = await teamModel.findOne({
+      randCode: team
+    });
+    old = old.teamComments;
+    if (old) {
+      neww =
+        old.filter((one) => {
+          if (one === comment)
+            return false;
+          return true;
         });
-        old = old.teamTasks;
-        if (old) {
-          neww =
-            old.filter((one) => {
-              if (one.task === task &&
-                one.teamMemberIdFrom === teamMemberIdFrom &&
-                one.teamMemberIdTo === teamMemberIdTo)
-                return false;
-              return true;
-            });
-        }
-      } catch {
-        return "404";
-      }
-      try {
-        await teamModel.updateOne({
-          randCode: team
-        }, {
-          teamTasks: neww
-        });
-      } catch {
-        return "updateErr";
-      }
-      return "1";
-
-
-
     }
-    async function getTeam(team) {
-      try {
-        let Team = await
-        teamModel.findOne({
-          randCode: team
-        });
-        if (Team)
-          return Team;
-        else {
-          throw "error";
-        }
-      } catch {
-        return "Err";
-      }
-    }
-
-
-    async function deleteComment(comment, team) {
-      let old;
-      let neww;
-      try {
-        old = await teamModel.findOne({
-          randCode: team
-        });
-        old = old.teamComments;
-        if (old) {
-          neww =
-            old.filter((one) => {
-              if (one === comment)
-                return false;
-              return true;
-            });
-        }
-      } catch {
-        return "404";
-      }
-      try {
-        await teamModel.updateOne({
-          randCode: team
-        }, {
-          teamTasks: neww
-        });
-      } catch {
-        return "updateErr";
-      }
-      return "1";
+  } catch {
+    return "404";
+  }
+  try {
+    await teamModel.updateOne({
+      randCode: team
+    }, {
+      teamTasks: neww
+    });
+  } catch {
+    return "updateErr";
+  }
+  return "1";
 
 
 
-    }
+}
 
 
-    module.exports = {
-      checkUniqueTeam,
-      addTeam,
-      joinTeam,
-      addComment,
-      getTeam,
-      addTask,
-      deleteComment,
-      deleteTask,
-      leaveTeam
-    };
+module.exports = {
+  checkUniqueTeam,
+  addTeam,
+  joinTeam,
+  addComment,
+  getTeam,
+  addTask,
+  deleteComment,
+  deleteTask,
+  leaveTeam
+};
