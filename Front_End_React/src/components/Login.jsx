@@ -8,7 +8,6 @@ state ={
   change = (e)=>{
 this.state[e.target.id] = e.target.value;
 this.setState(this.state);
-
   }
   render() {
 

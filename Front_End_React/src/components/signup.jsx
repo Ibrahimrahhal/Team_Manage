@@ -20,10 +20,10 @@ displayMessage = (m)=>{
   this.setState(this.state);
 
 }
-renderFalse =()=> {
+renderFalse = ()=> {
 if(this.state.error) return(<div style={{color:"#da1f26",marginBottom:"5px"}}>{this.state.errorMessage}</div>)
 };
-submit= async (e)=>{
+submit= (e)=>{
   e.preventDefault();
   let user = {
     UserName: this.state.UserName,
@@ -79,11 +79,7 @@ saveUser(user).then((data)=>{
       <label htmlFor="exampleInputPassword1">Password</label>
       <input type="password" className="form-control" id="exampleInputPassword1" value={this.Password} onChange={this.changePass} />
     </div>
-    {
-    this.renderFalse()
-    }
-
-
+    {this.renderFalse()}
     <button type="submit" className="btn btn-primary" onClick={this.submit}>Create</button>
   </form>
       </React.Fragment>
